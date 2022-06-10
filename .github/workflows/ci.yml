@@ -29,7 +29,7 @@ jobs:
         poetry add pylint
     - name: Analyze the code with pylint
       run: |
-        ./.venv/bin/python -m pylint $(git ls-files '*.py')
+        ./.venv/bin/python -m pylint $(git ls-files '*.py') --ignore-patterns=test_.*?py
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
       with:

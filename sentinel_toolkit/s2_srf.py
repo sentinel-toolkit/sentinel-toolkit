@@ -1,59 +1,104 @@
 """
-s2_srf provides the method read_s2_srf that reads the S2_SRF functions from a given
-Excel file and returns a corresponding colour.SpectralDistribution object that can be
-used in other colour-science operations.
+s2_srf_reader provides the class S2SrfReader that acts as a python wrapper
+of the Sentinel-2 Spectral Response Functions Excel file.
 """
 
 import warnings
 
-import numpy as np
 import pandas as pd
-from colour import MultiSpectralDistributions
 
 warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
 
-_WAVELENGTH_NAME = "SR_WL"
-_BAND_NAMES = ["S2{}_SR_AV_B1",
-               "S2{}_SR_AV_B2",
-               "S2{}_SR_AV_B3",
-               "S2{}_SR_AV_B4",
-               "S2{}_SR_AV_B5",
-               "S2{}_SR_AV_B6",
-               "S2{}_SR_AV_B7",
-               "S2{}_SR_AV_B8",
-               "S2{}_SR_AV_B8A",
-               "S2{}_SR_AV_B9",
-               "S2{}_SR_AV_B10",
-               "S2{}_SR_AV_B11",
-               "S2{}_SR_AV_B12"]
-_SHEET_NAME = "Spectral Responses (S2{})"
 
-
-def read_s2_srf(filename, satellite="A", shape=(360, 830)):
+class S2Srf:
     """
-    Read the Sentinel-2 spectral response functions excel file
-    and return it as a colour.MultiSpectralDistributions object
-
-    Parameters
-    ----------
-    filename : str
-               The S2_SRF excel filename.
-    satellite : str
-                The satellite identifier - A or B.
-    shape : tuple of int
-            The wavelength range of interest represented as a tuple (start, end).
-    Returns
-    -------
-    output : colour.MultiSpectralDistributions
-             Returns the Sentinel-2 spectral response functions as
-             a colour.MultiSpectralDistributions object.
+    Provides methods for reading the Sentinel-2 Spectral Response Functions Excel file.
     """
-    srf_data = pd.read_excel(filename, sheet_name=_SHEET_NAME.format(satellite))
 
-    wavelengths = srf_data[_WAVELENGTH_NAME]
-    band_names = list(map(lambda b: b.format(satellite), _BAND_NAMES))
+    _WAVELENGTH_NAME = "SR_WL"
+    _BAND_NAMES = ["S2{}_SR_AV_B1",
+                   "S2{}_SR_AV_B2",
+                   "S2{}_SR_AV_B3",
+                   "S2{}_SR_AV_B4",
+                   "S2{}_SR_AV_B5",
+                   "S2{}_SR_AV_B6",
+                   "S2{}_SR_AV_B7",
+                   "S2{}_SR_AV_B8",
+                   "S2{}_SR_AV_B8A",
+                   "S2{}_SR_AV_B9",
+                   "S2{}_SR_AV_B10",
+                   "S2{}_SR_AV_B11",
+                   "S2{}_SR_AV_B12"]
+    _SHEET_NAME = "Spectral Responses (S2{})"
 
-    bands_srf = srf_data[band_names][(wavelengths >= shape[0]) & (wavelengths <= shape[1])]
-    bands_srf = np.stack(bands_srf.to_numpy(dtype=np.float64), axis=0)
+    def __init__(self, filename, satellite="A"):
+        self.all_band_names = list(map(lambda b: b.format(satellite), self._BAND_NAMES))
+        self.s2_srf_data = pd.read_excel(filename, sheet_name=self._SHEET_NAME.format(satellite))
 
-    return MultiSpectralDistributions(dict(zip(wavelengths, bands_srf)))
+    def get_wavelengths(self):
+        """
+        Retrieves the wavelengths.
+
+        Returns
+        -------
+        output : ndarray
+                 An array containing the wavelengths
+        """
+        return self.s2_srf_data[self._WAVELENGTH_NAME].to_numpy()
+
+    def get_band_responses(self, band_name, wavelength_range=(360, 830)):
+        """
+        Retrieves the band responses given a band name.
+
+        Parameters
+        ----------
+        band_name : str
+                    The band name of interest.
+        wavelength_range : tuple of int
+               The wavelength range of interest. If missing, default to (360, 830).
+
+        Returns
+        -------
+        output : ndarray
+                 An array containing spectral responses of the given band.
+        """
+        wavelengths = self.get_wavelengths()
+        mask = (wavelengths >= wavelength_range[0]) & (wavelengths <= wavelength_range[1])
+
+        return self.s2_srf_data[band_name].to_numpy()[mask]
+
+    def get_bands_responses(self, band_names=None, wavelength_range=(360, 830)):
+        """
+        Retrieves the bands responses given an array of band names.
+
+        Parameters
+        ----------
+        band_names : list of str
+                     The band names of interest. If missing, default to all band names.
+
+        wavelength_range : tuple of int
+                           The wavelength range of interest. If missing, default to (360, 830).
+        Returns
+        -------
+        output : ndarray
+                 A (band_names_size x wavelengths_size) array
+                 containing the spectral responses of the given bands.
+        """
+        if band_names is None:
+            band_names = self.all_band_names
+
+        wavelengths = self.get_wavelengths()
+        mask = (wavelengths >= wavelength_range[0]) & (wavelengths <= wavelength_range[1])
+
+        return self.s2_srf_data[band_names].T.to_numpy()[:, mask]
+
+    def get_all_band_names(self):
+        """
+        Retrieves all the band names.
+
+        Returns
+        -------
+        output : list
+                 A list containing all the band names.
+        """
+        return self.all_band_names

@@ -4,9 +4,8 @@ Sentinel-Toolkit
 
 `Sentinel-Toolkit <https://github.com/sentinel-toolkit/sentinel-toolkit>`__ is an open-source
 `Python <https://www.python.org/>`__ package providing various utility tools for working
-with Sentinel-2 satellite images. For example, you can read S2_SRF functions as a
-cmf colour.MultiSpectralDistributions object, convert colour.SpectralDistribution to
-Spectral Responses.
+with Sentinel-2 satellite images. For example, you can use sentinel_toolkit.S2Srf class
+as a python wrapper of a given S2_SRF Excel file to read the spectral responses into ndarray.
 """
 
-from .s2_srf import read_s2_srf
+from .s2_srf import S2Srf
