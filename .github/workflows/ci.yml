@@ -30,12 +30,6 @@ jobs:
     - name: Analyze the code with pylint
       run: |
         ./.venv/bin/python -m pylint $(git ls-files '*.py') --ignore-patterns=test_.*?py
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: ${{ matrix.language }}
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
     - name: Execute unit tests
       run: |
         ./.venv/bin/python -m unittest discover
