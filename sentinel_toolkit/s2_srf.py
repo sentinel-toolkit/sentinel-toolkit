@@ -5,10 +5,7 @@ of the Sentinel-2 Spectral Response Functions Excel file.
 
 import warnings
 
-import numpy as np
 import pandas as pd
-
-from colour import MultiSpectralDistributions
 
 from colour import MultiSpectralDistributions
 
