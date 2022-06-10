@@ -1,3 +1,9 @@
+"""
+s2_srf provides the method read_s2_srf that reads the S2_SRF functions from a given
+Excel file and returns a corresponding colour.SpectralDistribution object that can be
+used in other colour-science operations.
+"""
+
 import warnings
 
 import numpy as np
