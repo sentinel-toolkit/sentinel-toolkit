@@ -5,7 +5,12 @@ of the Sentinel-2 Spectral Response Functions Excel file.
 
 import warnings
 
+import numpy as np
 import pandas as pd
+
+from colour import MultiSpectralDistributions
+
+from colour import MultiSpectralDistributions
 
 warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
 
@@ -102,3 +107,32 @@ class S2Srf:
                  A list containing all the band names.
         """
         return self.all_band_names
+
+    def get_bands_responses_distribution(self, band_names=None, wavelength_range=(360, 830)):
+        """
+        Read the Sentinel-2 spectral response functions excel file
+        and return it as a colour.MultiSpectralDistributions object
+
+        Parameters
+        ----------
+        band_names : list of str
+                     The band names of interest. If missing, default to all band names.
+        wavelength_range : tuple of int
+                           The wavelength range of interest. If missing, default to (360, 830).
+
+        Returns
+        -------
+        output : colour.MultiSpectralDistributions
+                 The Sentinel-2 spectral response functions
+                 as a colour.MultiSpectralDistributions object.
+        """
+        if band_names is None:
+            band_names = self.all_band_names
+
+        wavelengths = self.get_wavelengths()
+        mask = (wavelengths >= wavelength_range[0]) & (wavelengths <= wavelength_range[1])
+
+        bands_srf = self.s2_srf_data[band_names].to_numpy()[mask, :]
+        wavelengths = wavelengths[mask]
+
+        return MultiSpectralDistributions(dict(zip(wavelengths, bands_srf)))
