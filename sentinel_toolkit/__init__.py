@@ -8,4 +8,9 @@ with Sentinel-2 satellite images. For example, you can use sentinel_toolkit.S2Sr
 as a python wrapper of a given S2_SRF Excel file to read the spectral responses into ndarray.
 """
 
-from .s2_srf import S2Srf
+from .ecostress import generate_ecostress_db
+from .ecostress import Ecostress
+
+from .srf import S2Srf
+
+from .colorimetry import sentinel_values
