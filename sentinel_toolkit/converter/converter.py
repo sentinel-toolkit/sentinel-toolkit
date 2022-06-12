@@ -9,9 +9,9 @@ from argparse import ArgumentParser
 from pathlib import Path
 from spectral import EcostressDatabase
 
-from sentinel_toolkit import Ecostress, S2Srf
+from sentinel_toolkit.ecostress import Ecostress
 from sentinel_toolkit.colorimetry import sd_to_sentinel_numpy
-from sentinel_toolkit.srf import S2SrfOptions
+from sentinel_toolkit.srf import S2Srf, S2SrfOptions
 
 _ECOSTRESS_DB_FILENAME = "ecostress.db"
 _S2_SRF_FILENAME = "S2-SRF_COPE-GSEG-EOPG-TN-15-0007_3.0.xlsx"
@@ -115,10 +115,9 @@ def _main():
     converter = EcostressToSentinelConverter(Ecostress(ecostress_db), S2Srf(s2_srf_filename))
 
     satellite = args.satellite
-    band_names = args.band_names
-    wavelength_range = args.wavelength_range
+    wavelength_range = (args.wavelength_start, args.wavelength_end)
 
-    s2_srf_options = S2SrfOptions(satellite, band_names, wavelength_range)
+    s2_srf_options = S2SrfOptions(satellite=satellite, wavelength_range=wavelength_range)
     converter.convert_ecostress_to_sentinel_csv(s2_srf_options)
 
 
@@ -143,19 +142,18 @@ def _parse_args():
                         default='A',
                         help="Sentinel-2 Satellite Identifier - A or B."
                              " By default both satellites will be used.")
-    parser.add_argument('-b',
-                        '--band_names',
+    parser.add_argument('-ws',
+                        '--wavelength_start',
                         required=False,
-                        type=str,
-                        default=None,
-                        help="The band names to be used. By default all bands will be used.")
-    parser.add_argument('-w',
-                        '--wavelength_range',
+                        type=int,
+                        default=360,
+                        help="The wavelength range start. Default is 360.")
+    parser.add_argument('-we',
+                        '--wavelength_end',
                         required=False,
-                        type=str,
-                        default=(360, 830),
-                        help="The wavelength range to be used. Default is (360, 830).")
-
+                        type=int,
+                        default=830,
+                        help="The wavelength range end. Default is 830.")
     return parser.parse_args()
 
 

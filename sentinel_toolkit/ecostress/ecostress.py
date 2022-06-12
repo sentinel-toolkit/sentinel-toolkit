@@ -83,7 +83,7 @@ class Ecostress:
 
         return spectral_distribution
 
-    def get_spectral_distribution_numpy(self, spectrum_id, wavelength_rage):
+    def get_spectral_distribution_numpy(self, spectrum_id, wavelength_rage=None):
         """
         Returns the SpectralDistribution of a given example
         by a given spectrum_id and wavelength_range.

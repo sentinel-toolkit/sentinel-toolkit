@@ -7,7 +7,7 @@ from collections import namedtuple
 import colour
 import numpy as np
 
-from .illuminants import D65_360_830_1NM_DATA
+from .illuminants import D65_360_830_1NM_DISTRIBUTION
 from .illuminants.d65 import D65_360_830_1NM_VALUES
 
 SpectralData = namedtuple("SpectralData", "wavelengths spectral_responses")
@@ -63,7 +63,7 @@ def sd_to_sentinel_direct_colour(spectral_distribution, bands_responses, illumin
     """
     if illuminant is None:
         shape = spectral_distribution.shape
-        illuminant = colour.SpectralDistribution(D65_360_830_1NM_DATA).trim(shape)
+        illuminant = colour.SpectralDistribution(D65_360_830_1NM_DISTRIBUTION).trim(shape)
 
     row_sum = np.sum(bands_responses, axis=1)
     # Hack for solving division by zero optimally

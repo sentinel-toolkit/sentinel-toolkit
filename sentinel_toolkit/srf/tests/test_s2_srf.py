@@ -6,7 +6,7 @@ from colour import MultiSpectralDistributions
 from numpy.testing import assert_array_equal
 
 from sentinel_toolkit.srf import S2Srf
-from sentinel_toolkit.srf.s2_srf import S2SrfOptions
+from sentinel_toolkit.srf import S2SrfOptions
 
 
 class TestS2Srf(unittest.TestCase):

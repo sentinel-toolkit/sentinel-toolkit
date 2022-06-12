@@ -1,22 +1,15 @@
 import unittest
 from unittest import mock
-from unittest.mock import patch, mock_open, MagicMock
+from unittest.mock import patch, mock_open
 
 import numpy as np
 from colour import SpectralDistribution
 
-from sentinel_toolkit.colorimetry import sd_to_sentinel_direct_colour, sd_to_sentinel_direct_numpy
-
-from numpy.testing import assert_array_equal
-
 from sentinel_toolkit.colorimetry.sentinel_values import SpectralData
 from sentinel_toolkit.converter import EcostressToSentinelConverter
-from spectral import EcostressDatabase
-from sentinel_toolkit.ecostress import Ecostress
-from sentinel_toolkit.srf import S2Srf
 
 
-class TestEcostress(unittest.TestCase):
+class TestConverter(unittest.TestCase):
     _DB_FILENAME = "ecostress.db"
     _ECOSTRESS_DATA_DIRECTORY = "ecospeclib-all"
 
@@ -55,16 +48,6 @@ class TestEcostress(unittest.TestCase):
                    "S2A_SR_AV_B10",
                    "S2A_SR_AV_B11",
                    "S2A_SR_AV_B12"]
-
-    def test_sd_to_sentinel_direct_colour(self):
-        actual = sd_to_sentinel_direct_colour(self._SPECTRAL_DISTRIBUTION, self._BANDS_RESPONSES)
-        assert_array_equal(self._EXPECTED_SENTINEL_RESPONSE, actual)
-
-    def test_sd_to_sentinel_direct_numpy(self):
-        spectral_data = SpectralData(self._SPECTRAL_DISTRIBUTION.wavelengths,
-                                     self._SPECTRAL_DISTRIBUTION.values)
-        actual = sd_to_sentinel_direct_numpy(spectral_data, self._BANDS_RESPONSES)
-        assert_array_equal(self._EXPECTED_SENTINEL_RESPONSE, actual)
 
     @patch('sentinel_toolkit.srf.S2Srf')
     @patch('sentinel_toolkit.ecostress.Ecostress')

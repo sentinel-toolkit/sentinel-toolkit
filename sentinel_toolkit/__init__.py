@@ -12,5 +12,12 @@ from .ecostress import generate_ecostress_db
 from .ecostress import Ecostress
 
 from .srf import S2Srf
+from .srf import S2SrfOptions
 
-from .colorimetry import sentinel_values
+from .colorimetry import sd_to_sentinel_numpy
+from .colorimetry import sd_to_sentinel_colour
+
+from .colorimetry import sd_to_sentinel_direct_colour
+from .colorimetry import sd_to_sentinel_direct_numpy
+
+from .converter import EcostressToSentinelConverter
