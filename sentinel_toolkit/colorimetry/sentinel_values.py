@@ -15,9 +15,8 @@ SpectralData = namedtuple("SpectralData", "wavelengths spectral_responses")
 
 def sd_to_sentinel_colour(spectral_distribution,
                           s2_srf,
-                          band_names=None,
-                          illuminant=None,
-                          wavelength_range=(360, 830)):
+                          s2_srf_options,
+                          illuminant=None):
     """
     Returns the corresponding Sentinel-2 spectral responses to a given
     spectral distribution, band names, illuminant and wavelength range.
@@ -28,19 +27,19 @@ def sd_to_sentinel_colour(spectral_distribution,
                             The spectral distribution of interest.
     s2_srf : sentinel_toolkit.S2Srf
              The Sentinel-2 spectral response functions.
-    band_names : list of str
-                 The band names of interest.
+    s2_srf_options : S2SrfOptions
+                     The satellite, band names and wavelength range of interest.
+                     If satellite is missing, satellite 'A' will be used.
+                     If band names are missing, all band names will be used.
+                     If wavelength range is missing, (360, 830) will be used.
     illuminant : colour.SpectralDistribution
                  The illuminant to apply. If missing, default to D65 360-830 nm.
-    wavelength_range : tuple of int
-                       The wavelength range of interest. If missing, default to (360, 830).
-
     Returns
     -------
     output : ndarray
              The Sentinel-2 spectral responses.
     """
-    bands_responses = s2_srf.get_bands_responses(band_names, wavelength_range)
+    bands_responses = s2_srf.get_bands_responses(s2_srf_options)
     return sd_to_sentinel_direct_colour(spectral_distribution, bands_responses, illuminant)
 
 
@@ -78,9 +77,8 @@ def sd_to_sentinel_direct_colour(spectral_distribution, bands_responses, illumin
 
 def sd_to_sentinel_numpy(spectral_data,
                          s2_srf,
-                         band_names=None,
-                         illuminant=None,
-                         wavelength_range=(360, 830)):
+                         s2_srf_options,
+                         illuminant=None):
     """
     Returns the corresponding Sentinel-2 spectral responses to a given
     spectral distribution, band names, illuminant and wavelength range.
@@ -91,19 +89,19 @@ def sd_to_sentinel_numpy(spectral_data,
                     The wavelengths and spectral_responses of interest
     s2_srf : sentinel_toolkit.S2Srf
              The Sentinel-2 spectral response functions.
-    band_names : list of str
-                 The band names of interest.
+    s2_srf_options : S2SrfOptions
+                     The satellite, band names and wavelength range of interest.
+                     If satellite is missing, satellite 'A' will be used.
+                     If band names are missing, all band names will be used.
+                     If wavelength range is missing, (360, 830) will be used.
     illuminant : colour.SpectralDistribution
                  The illuminant to apply. If missing, default to D65 360-830 nm.
-    wavelength_range : tuple of int
-                       The wavelength range of interest. If missing, default to (360, 830).
-
     Returns
     -------
     output : ndarray
              The Sentinel-2 spectral responses.
     """
-    bands_responses = s2_srf.get_bands_responses(band_names, wavelength_range)
+    bands_responses = s2_srf.get_bands_responses(s2_srf_options)
     return sd_to_sentinel_direct_numpy(spectral_data, bands_responses, illuminant)
 
 
@@ -111,7 +109,8 @@ def sd_to_sentinel_direct_numpy(spectral_data, bands_responses, illuminant=None)
     """
     Returns the corresponding Sentinel-2 spectral responses to a given
     spectral distribution, band names, illuminant and wavelength range
-    in a highly optimized way.
+    in a highly optimized way.Note that currently there is no reshaping,
+    so all the arrays should have valid dimensions.
 
     Parameters
     ----------
@@ -121,8 +120,6 @@ def sd_to_sentinel_direct_numpy(spectral_data, bands_responses, illuminant=None)
                       The bands_responses functions represented as a 2D ndarray.
     illuminant : ndarray
                  The illuminant to apply. If missing, default to D65 360-830 nm.
-                 Note that currently there is no reshaping, so all the arrays
-                 should have valid dimensions.
     Returns
     -------
     output : ndarray

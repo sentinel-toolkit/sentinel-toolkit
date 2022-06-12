@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "sentinel-toolkit"
-version = "2.0.0"
+version = "3.0.0"
 description = "Various sentinel tools"
 license = "Apache-2.0"
 authors = ["Georgi Genchev <gdgenchev97@gmail.com>"]
 maintainers = ["Georgi Genchev <gdgenchev97@gmail.com>"]
 readme = "README.md"
 repository = "https://github.com/sentinel-toolkit/sentinel-toolkit"
-keywords = ["sentinel", "satellite", "sentinel-2", "sentinel-2"]
+keywords = ["sentinel", "satellite", "sentinel-2", "sentinel-2", "sentinel-toolkit"]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.11"

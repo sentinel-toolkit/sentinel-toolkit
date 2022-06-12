@@ -20,7 +20,7 @@ class Ecostress:
     def __init__(self, ecostress_db):
         self.ecostress_db = ecostress_db
 
-    def get_spectrum_ids(self, wavelength_rage=(360, 830)):
+    def get_spectrum_ids(self, wavelength_rage=None):
         """
         Returns the spectrum identifiers of the ecostress examples
         that have some spectral data in the given wavelength_range.
@@ -35,6 +35,9 @@ class Ecostress:
         output : list of int
                  A list of the identifiers of the found examples.
         """
+        if wavelength_rage is None:
+            wavelength_rage = (360, 830)
+
         sql = """
         select SpectrumID 
         from Spectra
@@ -44,9 +47,10 @@ class Ecostress:
         min_wavelength = wavelength_rage[0] / 1000
         max_wavelength = wavelength_rage[1] / 1000
 
-        return self.ecostress_db.query(sql, (max_wavelength, min_wavelength)).fetchall()
+        result = self.ecostress_db.query(sql, (max_wavelength, min_wavelength)).fetchall()
+        return [r[0] for r in result]
 
-    def get_spectral_distribution_colour(self, spectrum_id, wavelength_rage=(360, 830)):
+    def get_spectral_distribution_colour(self, spectrum_id, wavelength_rage=None):
         """
         Returns the SpectralDistribution of a given example
         by a given spectrum_id and wavelength_range.
@@ -63,6 +67,9 @@ class Ecostress:
         output : colour.SpectralDistribution
                  The corresponding SpectralDistribution.
         """
+        if wavelength_rage is None:
+            wavelength_rage = (360, 830)
+
         signature = self.ecostress_db.get_signature(spectrum_id)
 
         wavelengths = np.round(np.array(signature.x), 4) * 1000
@@ -76,7 +83,7 @@ class Ecostress:
 
         return spectral_distribution
 
-    def get_spectral_distribution_numpy(self, spectrum_id, wavelength_rage=(360, 830)):
+    def get_spectral_distribution_numpy(self, spectrum_id, wavelength_rage):
         """
         Returns the SpectralDistribution of a given example
         by a given spectrum_id and wavelength_range.
@@ -95,6 +102,9 @@ class Ecostress:
         output : SpectralData (tuple)
                  The tupled wavelengths and spectral_responses
         """
+        if wavelength_rage is None:
+            wavelength_rage = (360, 830)
+
         signature = self.ecostress_db.get_signature(spectrum_id)
 
         wavelengths = np.trunc(np.round(np.array(signature.x), 4) * 1000).astype(int)

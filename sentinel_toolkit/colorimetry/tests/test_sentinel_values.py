@@ -10,7 +10,7 @@ from numpy.testing import assert_array_equal
 from sentinel_toolkit.colorimetry.sentinel_values import SpectralData
 
 
-class TestEcostress(unittest.TestCase):
+class TestSentinelValues(unittest.TestCase):
     _DB_FILENAME = "ecostress.db"
     _ECOSTRESS_DATA_DIRECTORY = "ecospeclib-all"
 
@@ -46,5 +46,6 @@ class TestEcostress(unittest.TestCase):
         actual = sd_to_sentinel_direct_numpy(spectral_data, self._BANDS_RESPONSES)
         assert_array_equal(self._EXPECTED_SENTINEL_RESPONSE, actual)
 
-        if __name__ == '__main__':
-            unittest.main()
+
+if __name__ == '__main__':
+    unittest.main()

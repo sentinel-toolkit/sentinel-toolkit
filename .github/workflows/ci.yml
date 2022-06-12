@@ -29,7 +29,7 @@ jobs:
         poetry add pylint
     - name: Analyze the code with pylint
       run: |
-        ./.venv/bin/python -m pylint $(git ls-files '*.py') --ignore-patterns=test_.*?py
+        ./.venv/bin/python -m pylint $(git ls-files '*.py')
     - name: Execute unit tests
       run: |
         ./.venv/bin/python -m unittest discover
