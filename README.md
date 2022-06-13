@@ -106,7 +106,7 @@ Convert a spectral distribution to Sentinel-2 Responses:
 from spectral import EcostressDatabase
 from sentinel_toolkit.ecostress import Ecostress
 from sentinel_toolkit.srf import S2Srf, S2SrfOptions
-from sentinel_toolkit.colorimetry import sd_to_sentinel_numpy
+from sentinel_toolkit.colorimetry import sd_to_sentinel_numpy, sd_to_sentinel_direct_numpy
 from sentinel_toolkit.colorimetry.illuminants import D65_360_830_1NM_VALUES
 
 ecostress_db = EcostressDatabase("ecostress.db")
@@ -125,13 +125,21 @@ spectral_data_max_wavelength = spectral_data.wavelengths[-1]
 wr_start = max(wavelength_range[0], spectral_data_min_wavelength)
 wr_end = min(wavelength_range[1], spectral_data_max_wavelength)
 
+# Reshape the illuminant to the spectral distribution shape
+illuminant = D65_360_830_1NM_VALUES[wr_start - 360: wr_end - 359]
+
 # Get the sentinel responses for spectrum with id 1 for all bands
 # from satellite 'A' in wavelength_range (360, 830)
 s2_srf_options = S2SrfOptions(satellite='A', wavelength_range=(wr_start, wr_end))
 sentinel_responses = sd_to_sentinel_numpy(spectral_data,
                                           s2a_srf,
                                           s2_srf_options,
-                                          D65_360_830_1NM_VALUES)
+                                          illuminant)
+
+# Another way of doing this would be:
+s2_srf_options = S2SrfOptions(satellite='A', wavelength_range=(wr_start, wr_end))
+bands_responses = s2a_srf.get_bands_responses(s2_srf_options)
+sentinel_responses = sd_to_sentinel_direct_numpy(spectral_data, bands_responses, illuminant)
 ```
 
 ## Converting full Ecostress Spectral Library to Sentinel-2 Responses CSV file
