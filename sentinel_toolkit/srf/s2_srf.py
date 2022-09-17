@@ -163,12 +163,14 @@ class S2Srf:
                  The Sentinel-2 spectral response functions
                  as a colour.MultiSpectralDistributions object.
         """
-        satellite, band_names, wavelength_range = self._parse_s2srf_options(options)
+        satellite, band_ids, wavelength_range = self._parse_s2srf_options(options)
+
+        band_names = self.get_band_names(band_ids, satellite)
 
         wavelengths = self.get_wavelengths()
         mask = (wavelengths >= wavelength_range[0]) & (wavelengths <= wavelength_range[1])
+        wavelengths = wavelengths[mask]
 
         bands_srf = self.s2_srf_data[satellite][band_names].to_numpy()[mask, :]
-        wavelengths = wavelengths[mask]
 
         return MultiSpectralDistributions(dict(zip(wavelengths, bands_srf)))

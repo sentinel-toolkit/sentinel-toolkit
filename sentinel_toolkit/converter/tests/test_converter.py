@@ -53,7 +53,7 @@ class TestConverter(unittest.TestCase):
     @patch('sentinel_toolkit.ecostress.Ecostress')
     @patch('builtins.open', new_callable=mock_open())
     def test_dump(self, mock_open_file, mock_ecostress, mock_s2_srf):
-        mock_s2_srf.get_all_band_names.return_value = self._BAND_NAMES
+        mock_s2_srf.get_band_names.return_value = self._BAND_NAMES
         mock_s2_srf.get_bands_responses.return_value = self._BANDS_RESPONSES
 
         mock_ecostress.get_spectrum_ids.return_value = np.array([1])

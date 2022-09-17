@@ -68,7 +68,7 @@ class TestS2Srf(unittest.TestCase):
         b2_values = self._EXPECTED_BANDS_RESPONSES_DISTRIBUTION.values[:, self._B2_INDEX]
 
         expected = np.array([b1_values, b2_values])
-        actual = self.s2_srf.get_bands_responses(S2SrfOptions(band_names=[self._B1_NAME, self._B2_NAME]))
+        actual = self.s2_srf.get_bands_responses(S2SrfOptions(band_ids=[self._B1_INDEX, self._B2_INDEX]))
         assert_array_equal(expected, actual)
 
     def test_get_bands_responses_with_wavelength_range(self):
@@ -81,12 +81,24 @@ class TestS2Srf(unittest.TestCase):
 
     def test_get_all_bands_names_satellite_A(self):
         expected_band_names = list(map(lambda b: b.format('A'), self._EXPECTED_ALL_BAND_NAMES))
-        actual = self.s2_srf.get_all_band_names()
+        actual = self.s2_srf.get_band_names()
+        assert_array_equal(expected_band_names, actual)
+
+    def test_get_bands_names_satellite_A(self):
+        band_ids = [1, 2, 3]
+        expected_band_names = np.array(list(map(lambda b: b.format('A'), self._EXPECTED_ALL_BAND_NAMES)))[band_ids]
+        actual = self.s2_srf.get_band_names(band_ids)
         assert_array_equal(expected_band_names, actual)
 
     def test_get_all_bands_names_satellite_B(self):
         expected_band_names = list(map(lambda b: b.format('B'), self._EXPECTED_ALL_BAND_NAMES))
-        actual = self.s2_srf.get_all_band_names(satellite='B')
+        actual = self.s2_srf.get_band_names(satellite='B')
+        assert_array_equal(expected_band_names, actual)
+
+    def test_get_bands_names_satellite_B(self):
+        band_ids = [1, 2, 3]
+        expected_band_names = np.array(list(map(lambda b: b.format('B'), self._EXPECTED_ALL_BAND_NAMES)))[band_ids]
+        actual = self.s2_srf.get_band_names(band_ids, satellite='B')
         assert_array_equal(expected_band_names, actual)
 
     def test_get_bands_responses_distribution_satellite_A(self):
