@@ -30,7 +30,7 @@ class TestProductMetadata(unittest.TestCase):
         self.product_metadata = ProductMetadata(self._METADATA_FILENAME)
 
     def test_get_sensing_date(self):
-        actual = self.product_metadata.get_sensing_data()
+        actual = self.product_metadata.get_sensing_date()
         self.assertEqual(self._EXPECTED_SENSING_DATE, actual)
 
     def test_get_nodata_value(self):

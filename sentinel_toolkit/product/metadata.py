@@ -33,7 +33,7 @@ class ProductMetadata:
         metadata_file = Path(metadata_filename)
         self.tree = ET.parse(metadata_file)
 
-    def get_sensing_data(self):
+    def get_sensing_date(self):
         """
         Retrieves the sensing date.
 

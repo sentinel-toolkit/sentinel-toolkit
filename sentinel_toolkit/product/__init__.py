@@ -8,3 +8,5 @@ It provides the class ProductMetadata that has methods for retrieving some
 metadata information (Sensing Date, NODATA Value, Quantification Value,
 BOA Offset Values, Solar Irradiances) from the product's MTD_MSIL2A.xml.
 """
+
+from sentinel_toolkit.product.metadata import ProductMetadata
