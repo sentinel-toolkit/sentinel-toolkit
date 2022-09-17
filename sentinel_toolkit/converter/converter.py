@@ -14,7 +14,7 @@ from sentinel_toolkit.colorimetry import sd_to_sentinel_numpy
 from sentinel_toolkit.srf import S2Srf, S2SrfOptions
 
 _ECOSTRESS_DB_FILENAME = "ecostress.db"
-_S2_SRF_FILENAME = "S2-SRF_COPE-GSEG-EOPG-TN-15-0007_3.0.xlsx"
+_S2_SRF_FILENAME = "S2-SRF_COPE-GSEG-EOPG-TN-15-0007_3.1.xlsx"
 
 
 class EcostressToSentinelConverter:
@@ -41,7 +41,7 @@ class EcostressToSentinelConverter:
        s2_srf_options : S2SrfOptions
                      The satellite, band names and wavelength range of interest.
                      If satellite is missing, satellite 'A' will be used.
-                     If band names are missing, all band names will be used.
+                     If band ids are missing, all band ids will be used.
                      If wavelength range is missing, (360, 830) will be used.
         illuminant : ndarray
                      The illuminant values.
@@ -50,10 +50,9 @@ class EcostressToSentinelConverter:
         if s2_srf_options is None:
             s2_srf_options = S2SrfOptions(satellite='A', wavelength_range=(360, 830))
 
-        satellite, band_names, wavelength_range = s2_srf_options.unpack()
+        satellite, band_ids, wavelength_range = s2_srf_options.unpack()
 
-        if band_names is None:
-            band_names = self.s2rf.get_all_band_names(satellite)
+        band_names = self.s2rf.get_band_names(band_ids)
 
         output_filename = f"sentinel_{satellite}.csv"
 
@@ -115,9 +114,10 @@ def _main():
     converter = EcostressToSentinelConverter(Ecostress(ecostress_db), S2Srf(s2_srf_filename))
 
     satellite = args.satellite
+    band_ids = args.bands
     wavelength_range = (args.wavelength_start, args.wavelength_end)
 
-    s2_srf_options = S2SrfOptions(satellite=satellite, wavelength_range=wavelength_range)
+    s2_srf_options = S2SrfOptions(satellite=satellite, band_ids=band_ids, wavelength_range=wavelength_range)
     converter.convert_ecostress_to_sentinel_csv(s2_srf_options)
 
 
@@ -142,6 +142,14 @@ def _parse_args():
                         default='A',
                         help="Sentinel-2 Satellite Identifier - A or B."
                              " By default both satellites will be used.")
+    parser.add_argument('-b',
+                        '--bands',
+                        nargs='*',
+                        required=False,
+                        type=int,
+                        default=[1, 2, 3],
+                        help="Sentinel-2 Bands Identifiers List - 0 - 12."
+                             " By default bands 1, 2, 3 will be used.")
     parser.add_argument('-ws',
                         '--wavelength_start',
                         required=False,

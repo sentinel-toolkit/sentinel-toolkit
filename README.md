@@ -80,15 +80,15 @@ s2a_srf = S2Srf("srf.xlsx")
 # Retrieve the wavelengths of Sentinel-2A as ndarray.
 wavelengths = s2a_srf.get_wavelengths()
 
-# Retrieve all band names of Sentinel-2A as ndarray.
-band_names = s2a_srf.get_all_band_names()
+# Retrieve all the band names of Sentinel-2A bands 1, 2 and 3 as ndarray.
+band_names = s2a_srf.get_band_names(band_ids=[1, 2, 3])
 
 # Retrieve B2, B3, B4 of Sentinel-2A satellite in wavelength range (360, 830)
 # as colour.MultiSpectralDistributions.
 satellite = 'A'
-band_names_option = ["S2A_SR_AV_B2", "S2A_SR_AV_B3", "S2A_SR_AV_B4"]
+band_ids_option = [1, 2, 3]
 wavelength_range = (360, 830)
-s2_srf_options = S2SrfOptions(satellite, band_names_option, wavelength_range)
+s2_srf_options = S2SrfOptions(satellite, band_ids_option, wavelength_range)
 bands_responses_distribution = s2a_srf.get_bands_responses_distribution(s2_srf_options)
 
 # Retrieve all bands responses of Sentinel-2B in wavelength range (360, 830) as 2D ndarray.
@@ -164,5 +164,5 @@ converter.convert_ecostress_to_sentinel_csv()
 For convenience, there is a main method in converter.py that can be called from shell like so:
 
 ```shell
-$ python converter.py -e ecostress.db -s2 S2-SRF_COPE-GSEG-EOPG-TN-15-0007_3.0.xlsx -s A -ws 360 -we 830
+$ python converter.py -e ecostress.db -s2 S2-SRF_COPE-GSEG-EOPG-TN-15-0007_3.0.xlsx -s A -b 1 2 3 -ws 360 -we 830
 ```

@@ -8,6 +8,7 @@ import warnings
 from dataclasses import dataclass
 from typing import List, Tuple
 
+import numpy as np
 import pandas as pd
 
 from colour import MultiSpectralDistributions
@@ -19,10 +20,10 @@ warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
 class S2SrfOptions:
     """
     Keeps the options that can be passed to some of the S2Srf methods:
-    (satellite, band_names, wavelenegth_range)
+    (satellite, band_ids, wavelenegth_range)
     """
     satellite: str = 'A'
-    band_names: List[str] = None
+    band_ids: List[int] = None
     wavelength_range: Tuple[int, int] = (360, 830)
 
     def unpack(self):
@@ -31,10 +32,10 @@ class S2SrfOptions:
         Returns
         -------
         satellite : str
-        band_names : list of str
+        band_ids : list of int
         wavelength_range : tuple of int
         """
-        return self.satellite, self.band_names, self.wavelength_range
+        return self.satellite, self.band_ids, self.wavelength_range
 
 
 class S2Srf:
@@ -60,8 +61,8 @@ class S2Srf:
 
     def __init__(self, filename):
         self.all_band_names = {
-            'A': list(map(lambda b: b.format('A'), self._BAND_NAMES)),
-            'B': list(map(lambda b: b.format('B'), self._BAND_NAMES))
+            'A': np.array(list(map(lambda b: b.format('A'), self._BAND_NAMES))),
+            'B': np.array(list(map(lambda b: b.format('B'), self._BAND_NAMES)))
         }
 
         self.s2_srf_data = {
@@ -93,7 +94,7 @@ class S2Srf:
         options : S2SrfOptions
                   The satellite, band names and wavelength range of interest.
                   If satellite is missing, satellite 'A' will be used.
-                  If band names are missing, all band names will be used.
+                  If band ids are missing, all band ids will be used.
                   If wavelength range is missing, (360, 830) will be used.
         Returns
         -------
@@ -101,35 +102,38 @@ class S2Srf:
                  A (band_names_size x wavelengths_size) array
                  containing the spectral responses of the given bands.
         """
-        satellite, band_names, wavelength_range = self._parse_s2srf_options(options)
+        satellite, band_ids, wavelength_range = self._parse_s2srf_options(options)
 
         wavelengths = self.get_wavelengths()
         mask = (wavelengths >= wavelength_range[0]) & (wavelengths <= wavelength_range[1])
+        band_names = self.get_band_names(band_ids, satellite)
 
         return self.s2_srf_data[satellite][band_names].T.to_numpy()[:, mask]
 
     def _parse_s2srf_options(self, options):
         if options is None:
-            satellite, band_names, wavelength_range = None, None, None
+            satellite, band_ids, wavelength_range = None, None, None
         else:
             satellite = options.satellite
-            band_names = options.band_names
+            band_ids = options.band_ids
             wavelength_range = options.wavelength_range
         if satellite is None:
             satellite = 'A'
-        if band_names is None:
-            band_names = self.get_all_band_names(satellite)
+        if band_ids is None:
+            band_ids = list(range(0, len(self._BAND_NAMES)))
         if wavelength_range is None:
             wavelength_range = (360, 830)
 
-        return satellite, band_names, wavelength_range
+        return satellite, band_ids, wavelength_range
 
-    def get_all_band_names(self, satellite='A'):
+    def get_band_names(self, band_ids=None, satellite='A'):
         """
         Retrieves all the band names.
 
         Parameters
         ----------
+        band_ids : list of int
+                   The band ids of interest - 0 to 12. If missing, default to all bands.s
         satellite : str
                     The satellite of interest - A or B. If missing, default to 'A'
         Returns
@@ -137,7 +141,9 @@ class S2Srf:
         output : list
                  A list containing all the band names.
         """
-        return self.all_band_names[satellite]
+        if band_ids is None:
+            band_ids = list(range(0, len(self._BAND_NAMES)))
+        return self.all_band_names[satellite][band_ids]
 
     def get_bands_responses_distribution(self, options=None):
         """

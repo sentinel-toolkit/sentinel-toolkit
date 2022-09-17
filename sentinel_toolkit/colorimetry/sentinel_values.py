@@ -92,7 +92,7 @@ def sd_to_sentinel_numpy(spectral_data,
     s2_srf_options : S2SrfOptions
                      The satellite, band names and wavelength range of interest.
                      If satellite is missing, satellite 'A' will be used.
-                     If band names are missing, all band names will be used.
+                     If band ids are missing, all band ids will be used.
                      If wavelength range is missing, (360, 830) will be used.
     illuminant : colour.SpectralDistribution
                  The illuminant to apply. If missing, default to D65 360-830 nm.
