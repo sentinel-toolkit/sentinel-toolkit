@@ -117,7 +117,9 @@ def _main():
     band_ids = args.bands
     wavelength_range = (args.wavelength_start, args.wavelength_end)
 
-    s2_srf_options = S2SrfOptions(satellite=satellite, band_ids=band_ids, wavelength_range=wavelength_range)
+    s2_srf_options = S2SrfOptions(satellite=satellite,
+                                  band_ids=band_ids,
+                                  wavelength_range=wavelength_range)
     converter.convert_ecostress_to_sentinel_csv(s2_srf_options)
 
 
