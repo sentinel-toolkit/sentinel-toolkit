@@ -24,22 +24,22 @@ def sd_to_sentinel_colour(spectral_distribution,
     Parameters
     ----------
     spectral_distribution : colour.SpectralDistribution
-                            The spectral distribution to convert.
+        The spectral distribution to convert.
     s2_srf : sentinel_toolkit.S2Srf
-             The Sentinel-2 spectral response functions.
+        The Sentinel-2 spectral response functions.
     s2_srf_options : S2SrfOptions
-                     The satellite, band names and wavelength range.
-                     If satellite is missing, satellite 'A' will be used.
-                     If band names are missing, all band names will be used.
-                     If wavelength range is missing, (360, 830) will be used.
+        The satellite, band names and wavelength range.
+        If satellite is missing, satellite 'A' will be used.
+        If band names are missing, all band names will be used.
+        If wavelength range is missing, (360, 830) will be used.
     illuminant : colour.SpectralDistribution
-                 The illuminant to apply.
-                 If missing, default to D65 360-830 nm.
+        The illuminant to apply.
+        If missing, default to D65 360-830 nm.
 
     Returns
     -------
     output : ndarray
-             The Sentinel-2 spectral responses.
+        The Sentinel-2 spectral responses.
     """
     bands_responses = s2_srf.get_bands_responses(s2_srf_options)
     return sd_to_sentinel_direct_colour(spectral_distribution, bands_responses, illuminant)
@@ -52,17 +52,17 @@ def sd_to_sentinel_direct_colour(spectral_distribution, bands_responses, illumin
     Parameters
     ----------
     spectral_distribution : colour.SpectralDistribution
-                            The spectral distribution ro convert.
+        The spectral distribution ro convert.
     bands_responses : ndarray
-                      The bands_responses functions as a 2D ndarray.
+        The bands_responses functions as a 2D ndarray.
     illuminant : colour.SpectralDistribution
-                 The illuminant to apply.
-                 If missing, default to D65 360-830 nm.
+        The illuminant to apply.
+        If missing, default to D65 360-830 nm.
 
     Returns
     -------
     output : ndarray
-             The Sentinel-2 spectral responses.
+        The Sentinel-2 spectral responses.
     """
     if illuminant is None:
         shape = spectral_distribution.shape
@@ -88,22 +88,22 @@ def sd_to_sentinel_numpy(spectral_data,
     Parameters
     ----------
     spectral_data : SpectralData (tuple) of ndarray
-                    The spectral distribution.
+        The spectral distribution.
     s2_srf : sentinel_toolkit.S2Srf
-             The Sentinel-2 spectral response functions.
+        The Sentinel-2 spectral response functions.
     s2_srf_options : S2SrfOptions
-                     The satellite, band names and wavelength range.
-                     If satellite is missing, satellite 'A' will be used.
-                     If band ids are missing, all band ids will be used.
-                     If wavelength range is missing, (360, 830) will be used.
+        The satellite, band names and wavelength range.
+        If satellite is missing, satellite 'A' will be used.
+        If band ids are missing, all band ids will be used.
+        If wavelength range is missing, (360, 830) will be used.
     illuminant : colour.SpectralDistribution
-                 The illuminant to apply.
-                 If missing, default to D65 360-830 nm.
+        The illuminant to apply.
+        If missing, default to D65 360-830 nm.
 
     Returns
     -------
     output : ndarray
-             The Sentinel-2 spectral responses.
+        The Sentinel-2 spectral responses.
     """
     bands_responses = s2_srf.get_bands_responses(s2_srf_options)
     return sd_to_sentinel_direct_numpy(spectral_data, bands_responses, illuminant)
@@ -119,17 +119,17 @@ def sd_to_sentinel_direct_numpy(spectral_data, bands_responses, illuminant=None)
     Parameters
     ----------
     spectral_data : SpectralData (tuple) of ndarray
-                    The wavelengths and spectral_responses.
+        The wavelengths and spectral_responses.
     bands_responses : ndarray
-                      The bands_responses functions as a 2D ndarray.
+        The bands_responses functions as a 2D ndarray.
     illuminant : ndarray
-                 The illuminant to apply.
-                 If missing, default to D65 360-830 nm.
+        The illuminant to apply.
+        If missing, default to D65 360-830 nm.
 
     Returns
     -------
     output : ndarray
-             The Sentinel-2 spectral responses.
+        The Sentinel-2 spectral responses.
     """
     min_wavelength = int(spectral_data.wavelengths[0])
     max_wavelength = int(spectral_data.wavelengths[-1])
