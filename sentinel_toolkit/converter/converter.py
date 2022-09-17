@@ -33,13 +33,15 @@ class EcostressToSentinelConverter:
                                           s2_srf_options=None,
                                           illuminant=None):
         """
-        Converts the ecostress library into Sentinel-2 responses
-        and writes them to a CSV file named sentinel_<A or B>.csv.
+        Converts the ecostress library into Sentinel-2 responses csv.
+
+        The converted values are written to a CSV file
+        named sentinel_<A or B>.csv.
 
         Parameters
         ----------
-       s2_srf_options : S2SrfOptions
-                     The satellite, band names and wavelength range of interest.
+        s2_srf_options : S2SrfOptions
+                     The satellite, band names and wavelength range.
                      If satellite is missing, satellite 'A' will be used.
                      If band ids are missing, all band ids will be used.
                      If wavelength range is missing, (360, 830) will be used.

@@ -1,7 +1,8 @@
 """
 ecostress_db_generator provides a way to generate SQLite database
 containing the Ecostress spectral library.
-ecostress_db_generator.py can be used as a script to generate the database in the following manner::
+ecostress_db_generator.py can be used as a script to generate
+the database in the following manner:
 
 python ecostress_db_generator.py -d <ecostress_directory> -o <output_filename>
 
@@ -23,10 +24,10 @@ def generate_ecostress_db(ecostress_dir=_ECOSTRESS_DATA_DIRECTORY, output_db_fil
     ----------
     ecostress_dir : str
                     The Ecostress spectral library directory.
-                    If missing, default to "ecospeclib-all"
+                    If missing, default to "ecospeclib-all".
     output_db_filename : str
                          The name of the output SQLite database file.
-                         If missing, default to "ecostress.db"
+                         If missing, default to "ecostress.db".
     """
     EcostressDatabase.create(output_db_filename, ecostress_dir)
 

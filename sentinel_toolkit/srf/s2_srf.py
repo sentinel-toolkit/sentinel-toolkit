@@ -1,6 +1,8 @@
 """
-s2_srf_reader provides the class S2SrfReader that acts as a python wrapper
+s2_srf provides the class S2SrfOptions that acts as a python wrapper
 of the Sentinel-2 Spectral Response Functions Excel file.
+Also, S2SrfOptions dataclass is provided that can be used
+by outside callers to configure the desired options.
 """
 
 import warnings
@@ -29,6 +31,7 @@ class S2SrfOptions:
     def unpack(self):
         """
         Unpacks the dataclass into satellite, band_names and wavelength_range.
+
         Returns
         -------
         satellite : str
@@ -40,7 +43,7 @@ class S2SrfOptions:
 
 class S2Srf:
     """
-    Provides methods for reading the Sentinel-2 Spectral Response Functions Excel file.
+    Provides methods for working with Sentinel-2 SRF Excel file.
     """
 
     _WAVELENGTH_NAME = "SR_WL"
@@ -77,30 +80,32 @@ class S2Srf:
         Parameters
         ----------
         satellite : str
-                    The satellite of interest - A or B. If missing, default to 'A'
+                    The satellite - 'A' or 'B'. If missing, default to 'A'.
+
         Returns
         -------
         output : ndarray
-                 An array containing the wavelengths
+                 An array containing the wavelengths.
         """
         return self.s2_srf_data[satellite][self._WAVELENGTH_NAME].to_numpy()
 
     def get_bands_responses(self, options=None):
         """
-        Retrieves the bands responses given an array of band names.
+        Retrieves the bands responses.
 
         Parameters
         ----------
         options : S2SrfOptions
-                  The satellite, band names and wavelength range of interest.
+                  The satellite, band names and wavelength range.
                   If satellite is missing, satellite 'A' will be used.
                   If band ids are missing, all band ids will be used.
                   If wavelength range is missing, (360, 830) will be used.
+
         Returns
         -------
         output : ndarray
-                 A (band_names_size x wavelengths_size) array
-                 containing the spectral responses of the given bands.
+                 A (band_names_size x wavelengths_size) array containing
+                 the spectral responses of the given bands.
         """
         satellite, band_ids, wavelength_range = self._parse_s2srf_options(options)
 
@@ -128,14 +133,17 @@ class S2Srf:
 
     def get_band_names(self, band_ids=None, satellite='A'):
         """
-        Retrieves all the band names.
+        Retrieves the band names corresponding to the provided band ids.
 
         Parameters
         ----------
         band_ids : list of int
-                   The band ids of interest - 0 to 12. If missing, default to all bands.s
+                   The band ids - 0 to 12.
+                   If missing, default to all bands.
         satellite : str
-                    The satellite of interest - A or B. If missing, default to 'A'
+                    The satellite - 'A' or 'B'.
+                    If missing, default to 'A'.
+
         Returns
         -------
         output : list
@@ -147,16 +155,16 @@ class S2Srf:
 
     def get_bands_responses_distribution(self, options=None):
         """
-        Read the Sentinel-2 spectral response functions Excel file
-        and return it as a colour.MultiSpectralDistributions object
+        Read the Sentinel-2 SRF values to a colour.MultiSpectralDistributions
 
         Parameters
         ----------
         options : S2SrfOptions
-                  The satellite, band names and wavelength range of interest.
+                  The satellite, band names and wavelength range.
                   If satellite is missing, satellite 'A' will be used.
                   If band names are missing, all band names will be used.
                   If wavelength range is missing, (360, 830) will be used.
+
         Returns
         -------
         output : colour.MultiSpectralDistributions

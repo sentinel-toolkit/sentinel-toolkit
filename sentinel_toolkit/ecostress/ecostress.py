@@ -1,6 +1,5 @@
 """
-ecostress provides a wrapper class around the EcostressDatabase class from spectral library.
-Ecostress wrapper class can be used for querying spectral data only in a given wavelength range
+ecostress provides a wrapper class around spectral.EcostressDatabase.
 """
 
 import numpy as np
@@ -15,6 +14,8 @@ from sentinel_toolkit.colorimetry.sentinel_values import SpectralData
 class Ecostress:
     """
     Ecostress is a wrapper around the EcostressDatabase from spectral library.
+    The extra functionality that is provided is querying products that
+    have some values in a given wavelength range.
     """
 
     def __init__(self, ecostress_db):
@@ -22,13 +23,15 @@ class Ecostress:
 
     def get_spectrum_ids(self, wavelength_rage=None):
         """
-        Returns the spectrum identifiers of the ecostress examples
-        that have some spectral data in the given wavelength_range.
+        Retrieves the spectrum identifiers of the ecostress examples.
+
+        Ony examples that have some spectral data in the
+        given `wavelength_range` are returned.
 
         Parameters
         ----------
         wavelength_rage : tuple of int
-                          The wavelength range of interest.
+                          The wavelength range.
 
         Returns
         -------
@@ -52,15 +55,17 @@ class Ecostress:
 
     def get_spectral_distribution_colour(self, spectrum_id, wavelength_rage=None):
         """
-        Returns the SpectralDistribution of a given example
-        by a given spectrum_id and wavelength_range.
+        Retrieves the SpectralDistribution.
+
+        The SpectralDistribution with id `spectrum_id` is retrieved
+        and it is trimmed to the provided `wavelength_range`.
 
         Parameters
         ----------
         spectrum_id : int
                       The spectrum identifier.
         wavelength_rage : tuple of int
-                          The wavelength range of interest.
+                          The wavelength range.
 
         Returns
         -------
@@ -85,22 +90,25 @@ class Ecostress:
 
     def get_spectral_distribution_numpy(self, spectrum_id, wavelength_rage=None):
         """
-        Returns the SpectralDistribution of a given example
-        by a given spectrum_id and wavelength_range.
-        This method can be used for gaining better performance
-        if this method is called from a loop for a lot of examples.
+        Retrieves the SpectralDistribution.
+
+        The SpectralDistribution with id `spectrum_id` is retrieved
+        and it is trimmed to the provided `wavelength_range`.
+
+        This method can be used for gaining better performance, avoiding
+        the overhead of creating colour.SpectralDistribution.
 
         Parameters
         ----------
         spectrum_id : int
                       The spectrum identifier.
         wavelength_rage : tuple of int
-                          The wavelength range of interest.
+                          The wavelength range.
 
         Returns
         -------
         output : SpectralData (tuple)
-                 The tupled wavelengths and spectral_responses
+                 The tupled wavelengths and spectral_responses.
         """
         if wavelength_rage is None:
             wavelength_rage = (360, 830)

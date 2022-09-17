@@ -2,11 +2,14 @@
 Ecostress
 ================
 
-Ecostress module provides useful tools for working with NASA's Ecostress library.
-It builds on top of spectral library and provides a script for loading the Ecostress
-spectral data directory into an SQLite database. It also provides the class
-Ecostress that can adds some convenient methods on top of the spectral libray.
+Ecostress module provides tools for working with NASA Ecostress library.
+
+It utilizes the library `spectral` and provides a script for loading the
+Ecostress spectral data directory into an SQLite database.
+
+It also provides the class Ecostress that adds some convenient methods
+for working with spectral.EcostressDatabase
 """
 
-from .ecostress_db_generator import generate_ecostress_db
-from .ecostress import Ecostress
+from sentinel_toolkit.ecostress.ecostress_db_generator import generate_ecostress_db
+from sentinel_toolkit.ecostress.ecostress import Ecostress
