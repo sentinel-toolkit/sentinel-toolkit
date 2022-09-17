@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<n1:Level-2A_User_Product xmlns:n1="https://psd-14.sentinel2.eo.esa.int/PSD/User_Product_Level-2A.xsd"
+                          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                          xsi:schemaLocation="https://psd-14.sentinel2.eo.esa.int/PSD/User_Product_Level-2A.xsd">
+    <n1:General_Info>
+        <Product_Info>
+            <Datatake datatakeIdentifier="GS2B_20220915T092029_028862_N04.00">
+                <DATATAKE_SENSING_START>2022-09-15T09:20:29.024Z</DATATAKE_SENSING_START>
+            </Datatake>
+        </Product_Info>
+        <Product_Image_Characteristics>
+            <Special_Values>
+                <SPECIAL_VALUE_TEXT>NODATA</SPECIAL_VALUE_TEXT>
+                <SPECIAL_VALUE_INDEX>0</SPECIAL_VALUE_INDEX>
+            </Special_Values>
+            <QUANTIFICATION_VALUES_LIST>
+                <BOA_QUANTIFICATION_VALUE unit="none">10000</BOA_QUANTIFICATION_VALUE>
+            </QUANTIFICATION_VALUES_LIST>
+            <BOA_ADD_OFFSET_VALUES_LIST>
+                <BOA_ADD_OFFSET band_id="0">-1000</BOA_ADD_OFFSET>
+                <BOA_ADD_OFFSET band_id="1">-1000</BOA_ADD_OFFSET>
+                <BOA_ADD_OFFSET band_id="2">-1000</BOA_ADD_OFFSET>
+                <BOA_ADD_OFFSET band_id="3">-1000</BOA_ADD_OFFSET>
+            </BOA_ADD_OFFSET_VALUES_LIST>
+            <Reflectance_Conversion>
+                <Solar_Irradiance_List>
+                    <SOLAR_IRRADIANCE bandId="0" unit="W/m²/µm">1874.3</SOLAR_IRRADIANCE>
+                    <SOLAR_IRRADIANCE bandId="1" unit="W/m²/µm">1959.75</SOLAR_IRRADIANCE>
+                    <SOLAR_IRRADIANCE bandId="2" unit="W/m²/µm">1824.93</SOLAR_IRRADIANCE>
+                    <SOLAR_IRRADIANCE bandId="3" unit="W/m²/µm">1512.79</SOLAR_IRRADIANCE>
+                </Solar_Irradiance_List>
+            </Reflectance_Conversion>
+        </Product_Image_Characteristics>
+    </n1:General_Info>
+</n1:Level-2A_User_Product>
