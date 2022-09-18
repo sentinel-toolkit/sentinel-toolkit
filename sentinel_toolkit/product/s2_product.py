@@ -1,5 +1,5 @@
 """
-s2_product provides the class Product that provides various
+s2_product provides the class S2Product that provides various
 tools for working with Sentinel-2 product data.
 """
 
@@ -10,11 +10,12 @@ import numpy as np
 import rasterio
 
 from rasterio.enums import Resampling
-from sentinel_toolkit import dn_to_sentinel
-from sentinel_toolkit.product.s2_metadata import ProductMetadata
+
+from sentinel_toolkit.colorimetry import dn_to_sentinel
+from . import product_metadata
 
 
-class Product:
+class S2Product:
     """
     Provides methods for working with a Sentinel-2 product.
     """
@@ -44,7 +45,7 @@ class Product:
     def __init__(self, product_directory_name):
         self.directory_name = product_directory_name
         metadata_filename = self._get_metadata_filename()
-        self.metadata = ProductMetadata(metadata_filename)
+        self.metadata = product_metadata.S2ProductMetadata(metadata_filename)
 
     def _get_metadata_filename(self):
         metadata_filenames = self._find_filenames(
@@ -89,7 +90,7 @@ class Product:
 
         Returns
         -------
-        output : sentinel_toolkit.product.metadata.metadata.ProductMetadata
+        output : sentinel_toolkit.product.metadata.metadata.S2ProductMetadata
             The metadata of the product.
         """
         return self.metadata

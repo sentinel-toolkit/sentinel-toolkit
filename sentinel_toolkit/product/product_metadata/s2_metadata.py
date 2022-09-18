@@ -1,5 +1,5 @@
 """
-s2_metadata provides the class ProductMetadata that acts as a python wrapper
+s2_metadata provides the class S2ProductMetadata that acts as a python wrapper
 of the Sentinel-2 product metadata.
 """
 
@@ -9,7 +9,7 @@ import xml.etree.ElementTree as ET
 import numpy as np
 
 
-class ProductMetadata:
+class S2ProductMetadata:
     """
     Provides methods for reading Sentinel-2 product metadata.
     """

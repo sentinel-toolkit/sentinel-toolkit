@@ -5,7 +5,7 @@ from unittest.mock import patch, mock_open
 import numpy as np
 from colour import SpectralDistribution
 
-from sentinel_toolkit.colorimetry.sentinel_values import SpectralData
+from sentinel_toolkit.colorimetry import SpectralData
 from sentinel_toolkit.converter import EcostressToSentinelConverter
 
 

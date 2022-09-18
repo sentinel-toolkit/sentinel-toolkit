@@ -4,7 +4,7 @@ import unittest
 import numpy as np
 from numpy.testing import assert_array_equal
 
-from sentinel_toolkit.product.s2_metadata import ProductMetadata
+from sentinel_toolkit.product import S2ProductMetadata
 
 
 class TestProductMetadata(unittest.TestCase):
@@ -27,7 +27,7 @@ class TestProductMetadata(unittest.TestCase):
     }
 
     def setUp(self):
-        self.product_metadata = ProductMetadata(self._METADATA_FILENAME)
+        self.product_metadata = S2ProductMetadata(self._METADATA_FILENAME)
 
     def test_get_sensing_date(self):
         actual = self.product_metadata.get_sensing_date()

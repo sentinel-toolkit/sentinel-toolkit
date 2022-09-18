@@ -7,7 +7,7 @@ from numpy.testing import assert_array_equal
 from rasterio import CRS
 from rasterio._base import Profile, Affine
 
-from sentinel_toolkit import Product
+from sentinel_toolkit.product import S2Product
 
 
 class TestProduct(unittest.TestCase):
@@ -95,7 +95,7 @@ class TestProduct(unittest.TestCase):
     ])
 
     def setUp(self):
-        self.product = Product(self._PRODUCT_DIRECTORY_NAME)
+        self.product = S2Product(self._PRODUCT_DIRECTORY_NAME)
 
     def test_get_directory_name(self):
         actual = self.product.get_directory_name()
