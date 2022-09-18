@@ -1,6 +1,6 @@
 """
 metadata provides the class ProductMetadata that acts as a python wrapper
-of the Sentinel-L2A product metadata MTD_MSIL2A.xml.
+of the Sentinel-2 product metadata.
 """
 
 from pathlib import Path
@@ -11,7 +11,7 @@ import numpy as np
 
 class ProductMetadata:
     """
-    Provides methods for reading Sentinel-L2A product metadata.
+    Provides methods for reading Sentinel-2 product metadata.
     """
 
     _SENSING_DATE_TAG = "DATATAKE_SENSING_START"
@@ -29,9 +29,21 @@ class ProductMetadata:
     _SOLAR_IRRADIANCE_TAG = "SOLAR_IRRADIANCE"
     _SOLAR_IRRADIANCE_BAND_ID_ATTRIBUTE = "bandId"
 
-    def __init__(self, metadata_filename):
-        metadata_file = Path(metadata_filename)
-        self.tree = ET.parse(metadata_file)
+    def __init__(self, filename):
+        self.filename = filename
+        file = Path(filename)
+        self.tree = ET.parse(file)
+
+    def get_filename(self):
+        """
+        Retrieves the metadata filename.
+
+        Returns
+        -------
+        output : str
+            The metadata filename.
+        """
+        return self.filename
 
     def get_sensing_date(self):
         """
@@ -62,7 +74,7 @@ class ProductMetadata:
         nodata_value = int(nodata_element.text)
         return nodata_value
 
-    def get_boa_quantification_value(self):
+    def get_quantification_value(self):
         """
         Retrieves the BOA Quantification Value.
 
@@ -76,7 +88,7 @@ class ProductMetadata:
         boa_quantification_value = int(boa_quantification_value_element.text)
         return boa_quantification_value
 
-    def get_band_id_to_boa_offset(self):
+    def get_band_id_to_offset(self):
         """
         Retrieves a dictionary of band ids to BOA Offsets.
 
@@ -94,7 +106,7 @@ class ProductMetadata:
 
         return band_id_to_boa_offset
 
-    def get_boa_offsets(self, band_ids):
+    def get_offsets(self, band_ids):
         """
         Retrieves the BOA Offsets for the given band ids.
 
@@ -109,7 +121,7 @@ class ProductMetadata:
             An array of the bands' BOA offsets.
 
         """
-        return np.array([self.get_band_id_to_boa_offset()[band_id] for band_id in band_ids])
+        return np.array([self.get_band_id_to_offset()[band_id] for band_id in band_ids])
 
     def get_band_id_to_solar_irradiance(self):
         """

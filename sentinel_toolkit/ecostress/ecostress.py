@@ -31,12 +31,12 @@ class Ecostress:
         Parameters
         ----------
         wavelength_rage : tuple of int
-                          The wavelength range.
+            The wavelength range.
 
         Returns
         -------
         output : list of int
-                 A list of the identifiers of the found examples.
+            A list of the identifiers of the found examples.
         """
         if wavelength_rage is None:
             wavelength_rage = (360, 830)
@@ -63,14 +63,14 @@ class Ecostress:
         Parameters
         ----------
         spectrum_id : int
-                      The spectrum identifier.
+            The spectrum identifier.
         wavelength_rage : tuple of int
-                          The wavelength range.
+            The wavelength range.
 
         Returns
         -------
         output : colour.SpectralDistribution
-                 The corresponding SpectralDistribution.
+            The corresponding SpectralDistribution.
         """
         if wavelength_rage is None:
             wavelength_rage = (360, 830)
@@ -101,14 +101,14 @@ class Ecostress:
         Parameters
         ----------
         spectrum_id : int
-                      The spectrum identifier.
+            The spectrum identifier.
         wavelength_rage : tuple of int
-                          The wavelength range.
+            The wavelength range.
 
         Returns
         -------
         output : SpectralData (tuple)
-                 The tupled wavelengths and spectral_responses.
+            The tupled wavelengths and spectral_responses.
         """
         if wavelength_rage is None:
             wavelength_rage = (360, 830)

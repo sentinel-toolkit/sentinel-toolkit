@@ -80,12 +80,12 @@ class S2Srf:
         Parameters
         ----------
         satellite : str
-                    The satellite - 'A' or 'B'. If missing, default to 'A'.
+           The satellite - 'A' or 'B'. If missing, default to 'A'.
 
         Returns
         -------
         output : ndarray
-                 An array containing the wavelengths.
+            An array containing the wavelengths.
         """
         return self.s2_srf_data[satellite][self._WAVELENGTH_NAME].to_numpy()
 
@@ -96,16 +96,16 @@ class S2Srf:
         Parameters
         ----------
         options : S2SrfOptions
-                  The satellite, band names and wavelength range.
-                  If satellite is missing, satellite 'A' will be used.
-                  If band ids are missing, all band ids will be used.
-                  If wavelength range is missing, (360, 830) will be used.
+            The satellite, band names and wavelength range.
+            If satellite is missing, satellite 'A' will be used.
+            If band ids are missing, all band ids will be used.
+            If wavelength range is missing, (360, 830) will be used.
 
         Returns
         -------
         output : ndarray
-                 A (band_names_size x wavelengths_size) array containing
-                 the spectral responses of the given bands.
+            A (band_names_size x wavelengths_size) array containing
+            the spectral responses of the given bands.
         """
         satellite, band_ids, wavelength_range = self._parse_s2srf_options(options)
 
@@ -138,16 +138,16 @@ class S2Srf:
         Parameters
         ----------
         band_ids : list of int
-                   The band ids - 0 to 12.
-                   If missing, default to all bands.
+            The band ids - 0 to 12.
+            If missing, default to all bands.
         satellite : str
-                    The satellite - 'A' or 'B'.
-                    If missing, default to 'A'.
+            The satellite - 'A' or 'B'.
+            If missing, default to 'A'.
 
         Returns
         -------
         output : list
-                 A list containing all the band names.
+            A list containing all the band names.
         """
         if band_ids is None:
             band_ids = list(range(0, len(self._BAND_NAMES)))
@@ -160,16 +160,16 @@ class S2Srf:
         Parameters
         ----------
         options : S2SrfOptions
-                  The satellite, band names and wavelength range.
-                  If satellite is missing, satellite 'A' will be used.
-                  If band names are missing, all band names will be used.
-                  If wavelength range is missing, (360, 830) will be used.
+            The satellite, band names and wavelength range.
+            If satellite is missing, satellite 'A' will be used.
+            If band names are missing, all band names will be used.
+            If wavelength range is missing, (360, 830) will be used.
 
         Returns
         -------
         output : colour.MultiSpectralDistributions
-                 The Sentinel-2 spectral response functions
-                 as a colour.MultiSpectralDistributions object.
+            The Sentinel-2 spectral response functions
+            as a colour.MultiSpectralDistributions object.
         """
         satellite, band_ids, wavelength_range = self._parse_s2srf_options(options)
 

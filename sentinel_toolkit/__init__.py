@@ -19,7 +19,9 @@ from sentinel_toolkit.colorimetry import sd_to_sentinel_colour
 
 from sentinel_toolkit.colorimetry import sd_to_sentinel_direct_colour
 from sentinel_toolkit.colorimetry import sd_to_sentinel_direct_numpy
+from sentinel_toolkit.colorimetry import dn_to_sentinel
 
 from sentinel_toolkit.converter import EcostressToSentinelConverter
 
+from sentinel_toolkit.product import Product
 from sentinel_toolkit.product import ProductMetadata

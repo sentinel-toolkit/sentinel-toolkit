@@ -41,13 +41,13 @@ class EcostressToSentinelConverter:
         Parameters
         ----------
         s2_srf_options : S2SrfOptions
-                     The satellite, band names and wavelength range.
-                     If satellite is missing, satellite 'A' will be used.
-                     If band ids are missing, all band ids will be used.
-                     If wavelength range is missing, (360, 830) will be used.
+            The satellite, band names and wavelength range.
+            If satellite is missing, satellite 'A' will be used.
+            If band ids are missing, all band ids will be used.
+            If wavelength range is missing, (360, 830) will be used.
         illuminant : ndarray
-                     The illuminant values.
-                     If missing, D65 360-830 nm values will be used.
+            The illuminant values.
+            If missing, D65 360-830 nm values will be used.
         """
         if s2_srf_options is None:
             s2_srf_options = S2SrfOptions(satellite='A', wavelength_range=(360, 830))

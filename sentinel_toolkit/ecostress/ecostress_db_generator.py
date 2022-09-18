@@ -23,11 +23,11 @@ def generate_ecostress_db(ecostress_dir=_ECOSTRESS_DATA_DIRECTORY, output_db_fil
     Parameters
     ----------
     ecostress_dir : str
-                    The Ecostress spectral library directory.
-                    If missing, default to "ecospeclib-all".
+        The Ecostress spectral library directory.
+        If missing, default to "ecospeclib-all".
     output_db_filename : str
-                         The name of the output SQLite database file.
-                         If missing, default to "ecostress.db".
+        The name of the output SQLite database file.
+        If missing, default to "ecostress.db".
     """
     EcostressDatabase.create(output_db_filename, ecostress_dir)
 

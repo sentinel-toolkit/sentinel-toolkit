@@ -8,7 +8,7 @@ from sentinel_toolkit.product.metadata import ProductMetadata
 
 
 class TestProductMetadata(unittest.TestCase):
-    _METADATA_FILENAME = os.path.dirname(__file__) + "/test_data/metadata.xml"
+    _METADATA_FILENAME = os.path.join(os.path.dirname(__file__), "test_data", "metadata.xml")
 
     _EXPECTED_SENSING_DATE = "2022-09-15"
     _EXPECTED_NODATA_VALUE = 0
@@ -38,17 +38,17 @@ class TestProductMetadata(unittest.TestCase):
         self.assertEqual(self._EXPECTED_NODATA_VALUE, actual)
 
     def test_get_boa_quantification_value(self):
-        actual = self.product_metadata.get_boa_quantification_value()
+        actual = self.product_metadata.get_quantification_value()
         self.assertEqual(self._EXPECTED_BOA_QUANTIFICATION_VALUE, actual)
 
     def test_get_band_id_to_boa_offset(self):
-        actual = self.product_metadata.get_band_id_to_boa_offset()
+        actual = self.product_metadata.get_band_id_to_offset()
         self.assertEqual(self._EXPECTED_BAND_ID_TO_BOA_OFFSET, actual)
 
     def test_get_boa_offsets(self):
         band_ids = [1, 2, 3]
         expected = np.array([self._EXPECTED_BAND_ID_TO_BOA_OFFSET[band_id] for band_id in band_ids])
-        actual = self.product_metadata.get_boa_offsets(band_ids)
+        actual = self.product_metadata.get_offsets(band_ids)
         assert_array_equal(expected, actual)
 
     def test_get_band_id_to_solar_irradiance(self):
@@ -68,3 +68,7 @@ class TestProductMetadata(unittest.TestCase):
         expected = expected_solar_irradiance / np.max(expected_solar_irradiance)
         actual = self.product_metadata.get_normalized_solar_irradiances(band_ids)
         assert_array_equal(expected, actual)
+
+
+if __name__ == '__main__':
+    unittest.main()

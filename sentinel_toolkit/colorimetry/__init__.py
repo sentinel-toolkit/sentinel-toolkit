@@ -2,8 +2,8 @@
 Colorimetry
 ================
 
-Colorimetry module provides methods for converting a spectral distribution
-to Sentinel-2 spectral responses.
+Colorimetry module provides tools for converting dn values or
+spectral distribution to sentinel.
 """
 
 from sentinel_toolkit.colorimetry.sentinel_values import sd_to_sentinel_colour
@@ -11,6 +11,8 @@ from sentinel_toolkit.colorimetry.sentinel_values import sd_to_sentinel_direct_c
 
 from sentinel_toolkit.colorimetry.sentinel_values import sd_to_sentinel_numpy
 from sentinel_toolkit.colorimetry.sentinel_values import sd_to_sentinel_direct_numpy
+
+from sentinel_toolkit.colorimetry.sentinel_values import dn_to_sentinel
 
 from sentinel_toolkit.colorimetry.illuminants import D65_360_830_1NM_DISTRIBUTION
 from sentinel_toolkit.colorimetry.illuminants import D65_360_830_1NM_VALUES
