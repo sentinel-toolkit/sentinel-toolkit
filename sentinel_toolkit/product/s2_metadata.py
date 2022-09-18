@@ -1,5 +1,5 @@
 """
-metadata provides the class ProductMetadata that acts as a python wrapper
+s2_metadata provides the class ProductMetadata that acts as a python wrapper
 of the Sentinel-2 product metadata.
 """
 

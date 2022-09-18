@@ -1,5 +1,5 @@
 """
-product provides the class Product that provides various
+s2_product provides the class Product that provides various
 tools for working with Sentinel-2 product data.
 """
 
@@ -11,7 +11,7 @@ import rasterio
 
 from rasterio.enums import Resampling
 from sentinel_toolkit import dn_to_sentinel
-from sentinel_toolkit.product.metadata import ProductMetadata
+from sentinel_toolkit.product.s2_metadata import ProductMetadata
 
 
 class Product:

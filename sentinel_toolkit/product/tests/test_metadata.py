@@ -4,7 +4,7 @@ import unittest
 import numpy as np
 from numpy.testing import assert_array_equal
 
-from sentinel_toolkit.product.metadata import ProductMetadata
+from sentinel_toolkit.product.s2_metadata import ProductMetadata
 
 
 class TestProductMetadata(unittest.TestCase):

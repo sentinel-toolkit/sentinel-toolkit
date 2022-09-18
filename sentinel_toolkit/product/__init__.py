@@ -15,5 +15,5 @@ get the metdata.
 
 """
 
-from sentinel_toolkit.product.product import Product
-from sentinel_toolkit.product.metadata import ProductMetadata
+from sentinel_toolkit.product.s2_product import Product
+from sentinel_toolkit.product.s2_metadata import ProductMetadata
