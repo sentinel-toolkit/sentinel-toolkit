@@ -59,6 +59,7 @@ class TestProduct(unittest.TestCase):
             'count': 3,
             'crs': CRS.from_epsg(32634),
             'transform': Affine(10.0, 0.0, 710480.0, 0.0, -10.0, 4690230.0),
+            'blockysize': 4,
             'tiled': False
         }
     )
