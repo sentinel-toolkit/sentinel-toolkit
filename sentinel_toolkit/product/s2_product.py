@@ -219,5 +219,5 @@ class S2Product:
             'width': width,
             'height': height,
             'count': count,
-            'dtype': image.dtype
+            'dtype': image.dtype.name
         })
