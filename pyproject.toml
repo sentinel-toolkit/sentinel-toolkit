@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sentinel-toolkit"
-version = "7.0.3"
+version = "7.0.4"
 description = "Various sentinel tools"
 license = "Apache-2.0"
 authors = ["Georgi Genchev <gdgenchev97@gmail.com>"]
