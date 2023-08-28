@@ -15,6 +15,7 @@ from sentinel_toolkit.srf import S2Srf, S2SrfOptions
 
 _ECOSTRESS_DB_FILENAME = "ecostress.db"
 _S2_SRF_FILENAME = "S2-SRF_COPE-GSEG-EOPG-TN-15-0007_3.1.xlsx"
+_OUTPUT_FILENAME = "ecostress_sentinel_converted.csv"
 
 
 class EcostressToSentinelConverter:
@@ -172,8 +173,7 @@ def _parse_args():
     parser.add_argument('-o',
                         '--out',
                         required=False,
-                        type=int,
-                        default=830,
+                        type=str,
                         help="The filename that will be used to store the resulting csv.")
     return parser.parse_args()
 
