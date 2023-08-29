@@ -2,7 +2,7 @@
 d65 contains the D65 illuminant in wavelength range (360, 830)
 """
 
-D65_360_830_1NM_DISTRIBUTION = {
+D65_360_830_1NM = {
     360: 46.638300,
     361: 47.183400,
     362: 47.728500,
@@ -475,6 +475,3 @@ D65_360_830_1NM_DISTRIBUTION = {
     829: 60.025300,
     830: 60.31250
 }
-
-D65_360_830_1NM_VALUES = [D65_360_830_1NM_DISTRIBUTION[wl]
-                          for wl in range(360, 831)]

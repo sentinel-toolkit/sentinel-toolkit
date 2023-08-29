@@ -8,7 +8,8 @@ from sentinel_toolkit.colorimetry import (
     sd_to_sentinel_direct_colour,
     SpectralData,
     sd_to_sentinel_direct_numpy,
-    dn_to_sentinel
+    dn_to_sentinel,
+    get_well_known_illuminant
 )
 
 
@@ -37,6 +38,28 @@ class TestSentinelValues(unittest.TestCase):
     ]).T
 
     _EXPECTED_SENTINEL_RESPONSE = [10.985434, 11.086161, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+    _SPECTRAL_DISTRIBUTION_INFRA_RED = SpectralDistribution(
+        {
+            1337: 0.104,
+            1338: 0.1042,
+            1339: 0.1043,
+            1340: 0.1044,
+            1341: 0.1045,
+            1342: 0.1046,
+        }
+    )
+
+    _BANDS_RESPONSES_INFRA_RED = np.array([
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00024052, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00005404, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00003052, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00002872, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00007632, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010949, 0, 0],
+    ]).T
+
+    _EXPECTED_SENTINEL_RESPONSE_INFRA_RED = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.10425075, 0, 0]
 
     _BANDS_DN = np.array([
         [
@@ -121,6 +144,13 @@ class TestSentinelValues(unittest.TestCase):
                                             self._QUANTIFICATION_VALUE,
                                             self._NORMALIZED_SOLAR_IRRADIANCES)
         assert_allclose(self._EXPECTED_SENTINEL_RESPONSES, sentinel_responses)
+
+    def test_sd_to_sentinel_direct_numpy_infra_red_identity_illuminant(self):
+        spectral_data = SpectralData(self._SPECTRAL_DISTRIBUTION_INFRA_RED.wavelengths,
+                                     self._SPECTRAL_DISTRIBUTION_INFRA_RED.values)
+        illuminant = get_well_known_illuminant('identity', (438, 1342))
+        actual = sd_to_sentinel_direct_numpy(spectral_data, self._BANDS_RESPONSES_INFRA_RED, illuminant)
+        assert_allclose(self._EXPECTED_SENTINEL_RESPONSE_INFRA_RED, actual)
 
 
 if __name__ == '__main__':

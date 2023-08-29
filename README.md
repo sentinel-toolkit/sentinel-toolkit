@@ -189,7 +189,7 @@ from spectral import EcostressDatabase
 from sentinel_toolkit.ecostress import Ecostress
 from sentinel_toolkit.srf import S2Srf, S2SrfOptions
 from sentinel_toolkit.colorimetry import sd_to_sentinel_numpy, sd_to_sentinel_direct_numpy
-from sentinel_toolkit.colorimetry.illuminants import D65_360_830_1NM_VALUES
+from sentinel_toolkit.colorimetry.illuminants import D65_360_830_1NM
 
 ecostress_db = EcostressDatabase("ecostress.db")
 ecostress = Ecostress(ecostress_db)
@@ -207,8 +207,10 @@ spectral_data_max_wavelength = spectral_data.wavelengths[-1]
 wr_start = max(wavelength_range[0], spectral_data_min_wavelength)
 wr_end = min(wavelength_range[1], spectral_data_max_wavelength)
 
-# Reshape the illuminant to the spectral distribution shape
-illuminant = D65_360_830_1NM_VALUES[wr_start - 360: wr_end - 359]
+# You need to provide an illuminant, that at least covers the range of all the spectral distributions
+# i.e. if your data contains values in (360, 830), then the illuminant should be in range (<= 360, >= 830)
+# Otherwise, exception will be raised (currently no interpolation is performed on the illuminant)
+illuminant = D65_360_830_1NM
 
 # Get the sentinel responses for spectrum with id 1 for all bands
 # from satellite 'A' in wavelength_range (360, 830)
@@ -246,5 +248,5 @@ converter.convert_ecostress_to_sentinel_csv()
 For convenience, there is a main method in converter.py that can be called from shell like so:
 
 ```shell
-$ python converter.py -e ecostress.db -s2 S2-SRF_COPE-GSEG-EOPG-TN-15-0007_3.0.xlsx -s A -b 1 2 3 -ws 360 -we 830
+$ python converter.py -e ecostress.db -s2 S2-SRF_COPE-GSEG-EOPG-TN-15-0007_3.0.xlsx -s A -b 1 2 3 -ws 360 -we 830 -i d65
 ```
