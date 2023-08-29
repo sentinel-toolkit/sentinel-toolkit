@@ -8,8 +8,7 @@ from collections import namedtuple
 import colour
 import numpy as np
 
-from sentinel_toolkit.colorimetry.illuminants import D65_360_830_1NM_DISTRIBUTION
-from sentinel_toolkit.colorimetry.illuminants.d65 import D65_360_830_1NM_VALUES
+from sentinel_toolkit.colorimetry.illuminants import D65_360_830_1NM, get_illuminant_in_range
 
 SpectralData = namedtuple("SpectralData", "wavelengths spectral_responses")
 
@@ -55,7 +54,7 @@ def sd_to_sentinel_direct_colour(spectral_distribution, bands_responses, illumin
         The spectral distribution ro convert.
     bands_responses : ndarray
         The bands_responses functions as a 2D ndarray.
-    illuminant : colour.SpectralDistribution
+    illuminant : colour.SpectralDistribution | dict
         The illuminant to apply.
         If missing, default to D65 360-830 nm.
 
@@ -64,9 +63,10 @@ def sd_to_sentinel_direct_colour(spectral_distribution, bands_responses, illumin
     output : ndarray
         The Sentinel-2 spectral responses.
     """
-    if illuminant is None:
-        shape = spectral_distribution.shape
-        illuminant = colour.SpectralDistribution(D65_360_830_1NM_DISTRIBUTION).trim(shape)
+    shape = spectral_distribution.shape
+
+    illuminant_distribution = D65_360_830_1NM if illuminant is None else illuminant
+    illuminant = colour.SpectralDistribution(illuminant_distribution).trim(shape)
 
     row_sum = np.sum(bands_responses, axis=1)
     # Hack for solving division by zero optimally
@@ -96,7 +96,7 @@ def sd_to_sentinel_numpy(spectral_data,
         If satellite is missing, satellite 'A' will be used.
         If band ids are missing, all band ids will be used.
         If wavelength range is missing, (360, 830) will be used.
-    illuminant : colour.SpectralDistribution
+    illuminant : dict
         The illuminant to apply.
         If missing, default to D65 360-830 nm.
 
@@ -122,7 +122,7 @@ def sd_to_sentinel_direct_numpy(spectral_data, bands_responses, illuminant=None)
         The wavelengths and spectral_responses.
     bands_responses : ndarray
         The bands_responses functions as a 2D ndarray.
-    illuminant : ndarray
+    illuminant : dict
         The illuminant to apply.
         If missing, default to D65 360-830 nm.
 
@@ -134,15 +134,17 @@ def sd_to_sentinel_direct_numpy(spectral_data, bands_responses, illuminant=None)
     min_wavelength = int(spectral_data.wavelengths[0])
     max_wavelength = int(spectral_data.wavelengths[-1])
 
-    if illuminant is None:
-        illuminant = D65_360_830_1NM_VALUES[min_wavelength - 360: max_wavelength - 359]
+    illuminant = D65_360_830_1NM if illuminant is None else illuminant
+    # Trim once again, as the particular example might have a different shape
+    illuminant = get_illuminant_in_range(illuminant, (min_wavelength, max_wavelength))
 
     row_sum = np.sum(bands_responses, axis=1)
     # Hack for solving division by zero optimally
     row_sum[row_sum == 0] = 1
     bands_srf = bands_responses / row_sum[:, None]
 
-    sd_i = spectral_data.spectral_responses * illuminant
+    illuminant_values = np.fromiter(illuminant.values(), dtype=np.float64)
+    sd_i = spectral_data.spectral_responses * illuminant_values
 
     return np.dot(bands_srf, sd_i)
 

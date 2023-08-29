@@ -9,8 +9,13 @@ from argparse import ArgumentParser
 from pathlib import Path
 from spectral import EcostressDatabase
 
+from sentinel_toolkit.colorimetry import (
+    sd_to_sentinel_numpy,
+    get_well_known_illuminant_names,
+    get_well_known_illuminant,
+    get_illuminant_from_file
+)
 from sentinel_toolkit.ecostress import Ecostress
-from sentinel_toolkit.colorimetry import sd_to_sentinel_numpy
 from sentinel_toolkit.srf import S2Srf, S2SrfOptions
 
 _ECOSTRESS_DB_FILENAME = "ecostress.db"
@@ -44,9 +49,9 @@ class EcostressToSentinelConverter:
             If satellite is missing, satellite 'A' will be used.
             If band ids are missing, all band ids will be used.
             If wavelength range is missing, (360, 830) will be used.
-        illuminant : ndarray
-            The illuminant values.
-            If missing, D65 360-830 nm values will be used.
+        illuminant : dict
+            The illuminant distribution.
+            If missing, D65 360-830 nm will be used.
         out : str
             The output filename.
             If missing, "sentinel_<A or B>.csv" will be used.
@@ -125,8 +130,9 @@ def _main():
                                   band_ids=band_ids,
                                   wavelength_range=wavelength_range)
 
+    illuminant = _get_illuminant(args.illuminant, args.illuminant_file, wavelength_range)
     out = args.out
-    converter.convert_ecostress_to_sentinel_csv(s2_srf_options, out=out)
+    converter.convert_ecostress_to_sentinel_csv(s2_srf_options, illuminant=illuminant, out=out)
 
 
 def _parse_args():
@@ -170,12 +176,32 @@ def _parse_args():
                         type=int,
                         default=830,
                         help="The wavelength range end. Default is 830.")
+    illuminant_group = parser.add_mutually_exclusive_group(required=False)
+    supported_illuminants = ", ".join(get_well_known_illuminant_names())
+    illuminant_group.add_argument('-i',
+                                  '--illuminant',
+                                  required=False,
+                                  type=str,
+                                  default='d65',
+                                  help=f'The illuminant to use. One of: {supported_illuminants}')
+    illuminant_group.add_argument('-if',
+                                  '--illuminant_file',
+                                  required=False,
+                                  type=str,
+                                  help='The illuminant file to use. File format: '
+                                       '<wavelength> <value> <new_line>... i.e. 360 46.6383')
     parser.add_argument('-o',
                         '--out',
                         required=False,
                         type=str,
                         help="The filename that will be used to store the resulting csv.")
     return parser.parse_args()
+
+
+def _get_illuminant(illuminant_name, illuminant_filename, wavelength_range):
+    if illuminant_name is not None:
+        return get_well_known_illuminant(illuminant_name, wavelength_range)
+    return get_illuminant_from_file(illuminant_filename, wavelength_range)
 
 
 if __name__ == "__main__":
