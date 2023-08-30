@@ -72,13 +72,16 @@ class EcostressToSentinelConverter:
             for spectrum_id in spectrum_ids:
                 spectral_data = self.ecostress.get_spectral_distribution_numpy(spectrum_id,
                                                                                wavelength_range)
-                wavelength_range = _get_wavelength_range(spectral_data.wavelengths,
-                                                         wavelength_range)
-                s2_srf_options.wavelength_range = wavelength_range
+
+                local_s2_srf_options = S2SrfOptions(
+                    s2_srf_options.satellite,
+                    s2_srf_options.band_ids,
+                    _get_wavelength_range(spectral_data.wavelengths, wavelength_range)
+                )
 
                 sentinel_responses = sd_to_sentinel_numpy(spectral_data,
                                                           self.s2rf,
-                                                          s2_srf_options,
+                                                          local_s2_srf_options,
                                                           illuminant)
                 _write_sentinel_responses_line(sentinel_file, spectrum_id, sentinel_responses)
 
